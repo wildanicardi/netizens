@@ -16,7 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('tweets', 'TweetController');
+    Route::post('/profiles/{user:username}/follow', 'FollowController@store');
+    Route::get('/profiles/{user:username}/edit', 'ProfileController@edit')->middleware('can:edit,user');
+    Route::patch('/profiles/{user:username}', 'ProfileController@update')->name('profile');
+});
+Route::get('/profiles/{user:username}', 'ProfileController@show')->name('profile');
 Auth::routes();
-Route::resource('tweets', 'TweetController');
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');

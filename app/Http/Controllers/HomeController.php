@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $tweets = auth()->user()->timeline();
+        $tweets = current_user()->timeline();
         return view('home', [
             'tweets' => $tweets
         ]);
