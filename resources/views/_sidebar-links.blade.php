@@ -16,47 +16,23 @@
             Explore
         </a>
     </li>
+    @auth
     <li>
         <a
             class="font-bold text-lg mb-4 block"
-            href="/explore"
+            href="{{ current_user()->path() }}"
         >
-            Notifications
-        </a>
-    </li>
-    <li>
-        <a
-            class="font-bold text-lg mb-4 block"
-            href="/explore"
-        >
-            Messages
-        </a>
-    </li>
-    <li>
-        <a
-            class="font-bold text-lg mb-4 block"
-            href="/explore"
-        >
-            Bookmarks
-        </a>
-    </li>
-    </li>
-    <li>
-        <a
-            class="font-bold text-lg mb-4 block"
-            href="/explore"
-        >
-            Lists
+            Profile
         </a>
     </li>
 
+    <li>
+        <form method="POST" action="/logout">
+            @csrf
 
-        <li>
-            <a
-                class="font-bold text-lg mb-4 block"
-                href="{{route('profile',current_user()->username) }}"
-            >
-                Profile
-            </a>
-        </li>
+            <button class="font-bold text-lg">Logout</button>
+        </form>
+    </li>
+@endauth
+
 </ul>

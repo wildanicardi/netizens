@@ -18,9 +18,13 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('tweets', 'TweetController');
-    Route::post('/profiles/{user:username}/follow', 'FollowController@store');
+    Route::post('/profiles/{user:username}/follow', 'FollowController@store')->name('follow');
     Route::get('/profiles/{user:username}/edit', 'ProfileController@edit')->middleware('can:edit,user');
-    Route::patch('/profiles/{user:username}', 'ProfileController@update')->name('profile');
+    Route::patch('/profiles/{user:username}', 'ProfileController@update')->middleware('can:edit,user');
+    Route::get('/explore', 'ExploreController');
+
+    Route::post('/tweets/{tweet}/like', 'LikeController@store');
+    Route::delete('/tweets/{tweet}/like', 'LikeController@destroy');
 });
 Route::get('/profiles/{user:username}', 'ProfileController@show')->name('profile');
 Auth::routes();

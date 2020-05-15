@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Like;
 use App\Tweet;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -39,6 +40,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tweet::class)->latest();
     }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
     public function timeline()
     {
         // return Tweet::where('user_id', $this->id)->latest()->get();
@@ -47,12 +52,15 @@ class User extends Authenticatable
         return Tweet::whereIn('user_id', $friends)
             ->orWhere('user_id', $this->id)
             ->latest()
-            ->get();
+            ->paginate(20);
     }
 
     public function getAvatarAttribute($value)
     {
-        return asset('storage/' . $value ?: '/images/default-avatar.jpeg');
+        if ($value) {
+            return asset('storage/' . $value);
+        }
+        return asset('/images/default-avatar.jpeg');
     }
     public function setPasswordAttribute($value)
     {

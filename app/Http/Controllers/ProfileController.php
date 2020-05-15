@@ -48,7 +48,10 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         // ddd($user);
-        return view('profiles.show', compact('user'));
+        return view('profiles.show', [
+            'user' => $user,
+            'tweets' => $user->tweets()->with('likes')->paginate(3)
+        ]);
     }
 
     /**
